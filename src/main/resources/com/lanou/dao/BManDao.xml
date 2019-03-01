@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lanou.dao.BManDao">
+    <!--当前的mapper开启二级缓存-->
+    <cache/>
+
+    <resultMap id="BMan" type="com.lanou.pojo.BMan">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <collection property="womanList" ofType="com.lanou.pojo.BWoman" select="selectWoman" column="id"
+                    fetchType="lazy">
+            <!--<id property="id" column="id"/>-->
+            <!--<result property="name" column="name"/>-->
+            <!--<result property="age" column="age"/>-->
+        </collection>
+    </resultMap>
+
+    <!--<select id="selectAllBMan" resultMap="BMan">-->
+    <!--select m.*,w.id woman_id,w.name woman_name,w.age woman_age-->
+    <!--from b_man m-->
+    <!--left join b_woman w on m.id = w.man_id-->
+    <!--</select>-->
+
+    <select id="selectWoman" resultType="com.lanou.pojo.BWoman">
+               select * from b_woman where man_id=#{id}
+    </select>
+
+    <select id="selectAllBMan" resultMap="BMan">
+               select * from b_man
+    </select>
+
+    <select id="selectById" resultType="com.lanou.pojo.BMan">
+        select * from b_man where id=#{id}
+    </select>
+</mapper>
